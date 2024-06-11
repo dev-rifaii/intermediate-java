@@ -17,9 +17,4 @@ public class PersonDao {
         return new Person(getRandomLong(), "FOO BAR");
     }
 
-    public void doSomeHeavyWork(int sleepMillis) {
-        log("Starting doing some heavy work...");
-        sleep(sleepMillis);
-        log("Heavy work finished.");
-    }
 }

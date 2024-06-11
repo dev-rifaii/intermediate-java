@@ -31,4 +31,10 @@ public class RandomUtility {
             throw new RuntimeException(e);
         }
     }
+
+    public static void doSomeHeavyWork(int sleepMillis) {
+        log("Starting doing some heavy work...");
+        sleep(sleepMillis);
+        log("Heavy work finished.");
+    }
 }

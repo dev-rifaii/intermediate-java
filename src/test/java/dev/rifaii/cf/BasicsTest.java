@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static dev.rifaii.util.RandomUtility.log;
-import static dev.rifaii.util.RandomUtility.sleep;
+import static dev.rifaii.util.RandomUtility.*;
 
 /**
  * This class shows the basics of using {@link CompletableFuture}
@@ -39,7 +38,7 @@ class BasicsTest extends TestBase {
 
     @Test
     void runningInBackground() {
-        CompletableFuture.runAsync(() -> personDao.doSomeHeavyWork(4000));
+        CompletableFuture.runAsync(() -> doSomeHeavyWork(4000));
     }
 
     @Test
@@ -60,8 +59,8 @@ class BasicsTest extends TestBase {
         var future = CompletableFuture.supplyAsync(() -> personDao.getRandomPerson(4000));
 
         //Some other blocking operations
-        personDao.doSomeHeavyWork(4000);
-        personDao.doSomeHeavyWork(2000);
+        doSomeHeavyWork(4000);
+        doSomeHeavyWork(2000);
 
         log("Is future done: " + future.isDone());
         Person person = future.get();

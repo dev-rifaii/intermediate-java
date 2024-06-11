@@ -4,20 +4,22 @@ import dev.rifaii.util.RandomUtility;
 
 import java.util.Random;
 
-import static dev.rifaii.util.RandomUtility.getRandomLong;
+import static dev.rifaii.util.RandomUtility.*;
 
 public class PersonDao {
 
     public Person getRandomPerson() {
-        return new Person(getRandomLong(), "Test");
+        return new Person(getRandomLong(), "FOO BAR");
     }
 
     public Person getRandomPerson(int sleepMillis) {
-        try {
-            Thread.sleep(sleepMillis);
-            return new Person(getRandomLong(), "Test");
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        sleep(sleepMillis);
+        return new Person(getRandomLong(), "FOO BAR");
+    }
+
+    public void doSomeHeavyWork(int sleepMillis) {
+        log("Starting doing some heavy work...");
+        sleep(sleepMillis);
+        log("Heavy work finished.");
     }
 }

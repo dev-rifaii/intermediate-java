@@ -1,5 +1,6 @@
 package dev.rifaii.util;
 
+import java.awt.*;
 import java.time.LocalTime;
 
 public class RandomUtility {
@@ -18,7 +19,13 @@ public class RandomUtility {
     }
 
     public static void sleep(long millis) {
+        sleep(millis, false);
+    }
+
+    public static void sleep(long millis, boolean logIt) {
         try {
+            if (logIt)
+                log("Sleeping for " + millis + "ms");
             Thread.sleep(millis);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

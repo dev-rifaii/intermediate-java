@@ -1,18 +1,22 @@
 package dev.rifaii.cf;
 
+import dev.rifaii.resources.CarDao;
+import dev.rifaii.resources.PersonDao;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * This class shows ways of chaining completable future
+ */
 class ChainingTest {
+
+    private final PersonDao personDao = new PersonDao();
+    private final CarDao carDao = new CarDao();
 
     @Test
     void thenApplyVsThenCompose() {
-
-
-//
-
         CompletableFuture.supplyAsync(() -> 1)
             .thenApply(v -> {
                 log("Starting THEN-APPLY sleep");

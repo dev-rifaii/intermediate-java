@@ -5,6 +5,7 @@ import dev.rifaii.resources.Car;
 import dev.rifaii.resources.CarDao;
 import dev.rifaii.resources.Person;
 import dev.rifaii.resources.PersonDao;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CompletableFuture;
@@ -36,7 +37,6 @@ class ChainingTest extends TestBase {
         doSomeHeavyWork(3000);
     }
 
-
     /*
      * thenApply method is used to map returned value of CF
      * to another, thenCompose does the same thing so what's
@@ -46,6 +46,7 @@ class ChainingTest extends TestBase {
      *       thenCompose = Optional.flatMap()
      */
     @Test
+    @Disabled
     void thenApplyVsThenCompose() {
         CompletableFuture<CompletableFuture<Car>> thenApplyExample = CompletableFuture.supplyAsync(
                 () -> personDao.getRandomPerson(2000)
@@ -59,20 +60,15 @@ class ChainingTest extends TestBase {
     }
 
     /*
-     * Doing the same thing but logging the threads
+     * FAQ:
+     * If sync version of chaining methods isn't blocking
+     * then why is there async versions of them?
      */
     @Test
     void syncVersionsOfChainingMethods() {
         log("CURRENT THREAD: %s".formatted(Thread.currentThread().getName()));
 
-        CompletableFuture<Person> future = CompletableFuture.supplyAsync(() -> {
-            log("Getting PERSON on thread: %s".formatted(Thread.currentThread().getName()));
-            return personDao.getRandomPerson(1000);
-        });
-
-        sleep(2000);
-
-        future
+        CompletableFuture.completedFuture(new Person(151L, "TEST"))
             .thenApply(person -> {
                 log("Getting CAR on thread: %s".formatted(Thread.currentThread().getName()));
                 return carDao.getCar(person.id(), 5000);
@@ -81,27 +77,13 @@ class ChainingTest extends TestBase {
                 log("Accepting CAR on thread: %s".formatted(Thread.currentThread().getName()));
                 log("Yay car id %d returned".formatted(car.id()));
             });
-
-        doSomeHeavyWork(3000);
     }
 
-    /*
-     * FAQ:
-     * If sync version of chaining methods isn't blocking
-     * then why is there async versions of them?
-     */
     @Test
     void asyncVersionsOfChainingMethods() {
         log("CURRENT THREAD: %s".formatted(Thread.currentThread().getName()));
 
-        CompletableFuture<Person> future = CompletableFuture.supplyAsync(() -> {
-            log("Getting PERSON on thread: %s".formatted(Thread.currentThread().getName()));
-            return personDao.getRandomPerson(1000);
-        });
-
-        sleep(2000);
-
-        future
+        CompletableFuture.completedFuture(new Person(151L, "TEST"))
             .thenApplyAsync(person -> {
                 log("Getting CAR on thread: %s".formatted(Thread.currentThread().getName()));
                 return carDao.getCar(person.id(), 5000);
@@ -110,8 +92,16 @@ class ChainingTest extends TestBase {
                 log("Accepting CAR on thread: %s".formatted(Thread.currentThread().getName()));
                 log("Yay car id %d returned".formatted(car.id()));
             });
+    }
 
-        doSomeHeavyWork(3000);
+    @Test
+    void thenCombine() {
+        CompletableFuture<Person> personFuture = CompletableFuture.supplyAsync(() -> personDao.getRandomPerson(3000));
+        CompletableFuture.supplyAsync(() -> carDao.getCar(5L))
+            .thenCombine(personFuture, (car, person) -> person.id() + car.id())
+            .thenAccept(sum -> log("Sum is %d".formatted(sum)));
+
+        doSomeHeavyWork(5000);
     }
 
 }

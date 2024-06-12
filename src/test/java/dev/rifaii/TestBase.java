@@ -1,5 +1,7 @@
 package dev.rifaii;
 
+import dev.rifaii.resources.CarDao;
+import dev.rifaii.resources.PersonDao;
 import dev.rifaii.util.RandomUtility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import static dev.rifaii.util.RandomUtility.log;
 
 public abstract class TestBase {
+
+    public final PersonDao personDao = new PersonDao();
+    public final CarDao carDao = new CarDao();
 
     @BeforeEach
     void before() {

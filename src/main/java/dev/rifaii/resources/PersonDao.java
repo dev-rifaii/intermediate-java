@@ -17,4 +17,9 @@ public class PersonDao {
         return new Person(getRandomLong(), "FOO BAR");
     }
 
+    public Person throwingGetMock(long millis) {
+        sleep(millis);
+        throw new RuntimeException("BEEP BOOP");
+    }
+
 }

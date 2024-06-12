@@ -17,9 +17,6 @@ import static dev.rifaii.util.RandomUtility.*;
  */
 class ChainingTest extends TestBase {
 
-    private final PersonDao personDao = new PersonDao();
-    private final CarDao carDao = new CarDao();
-
     /*
      * How to use result of CF for another operation using chaining?
      * Demonstrating thenApply, thenAccept and thenRun methods

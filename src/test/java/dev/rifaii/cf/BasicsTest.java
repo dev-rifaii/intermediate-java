@@ -15,8 +15,6 @@ import static dev.rifaii.util.RandomUtility.*;
  */
 class BasicsTest extends TestBase {
 
-    final PersonDao personDao = new PersonDao();
-
     @Test
     void withoutCompletableFuture() {
         personDao.getRandomPerson(4000);

@@ -19,11 +19,7 @@ public class CarDao {
     }
 
     public CompletableFuture<Car> getCarAsync(Long personId) {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+       sleep(500);
         return CompletableFuture.supplyAsync(
             () -> new Car(RandomUtility.getRandomLong(), personId)
         );

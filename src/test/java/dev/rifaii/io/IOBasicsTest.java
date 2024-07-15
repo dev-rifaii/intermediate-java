@@ -9,7 +9,13 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Stream;
+
+import static java.util.Arrays.asList;
 
 /*
  * There are many ways to read a file in Java:
@@ -21,7 +27,7 @@ import java.util.Scanner;
 public class IOBasicsTest {
 
     private static final String RAND_FILE_NAME = "src/test/resources/rand.txt";
-    private static final String CAR_FILE_NAME = "src/test/resources/car.txt";
+    private static final String SPECIAL_FILE_NAME = "src/test/resources/special.txt";
     private static final String LARGE_FILE_NAME = "src/test/resources/large.txt";
 
     private static final int L_DECIMAL_REP = 76;
@@ -36,7 +42,7 @@ public class IOBasicsTest {
     }
 
     /**
-     * @see InputStream reads only one BYTE at a time
+     * @see InputStream only reads bytes.
      */
     @Test
     void fileInputStream() throws IOException {
@@ -44,7 +50,7 @@ public class IOBasicsTest {
         Assertions.assertTrue(file.exists());
 
         try (InputStream inputStream = new FileInputStream(file)) {
-            int byt = inputStream.read();
+            int byt = inputStream.read(); //It's also possible to read N bytes using #readNBytes
             Assertions.assertEquals(L_DECIMAL_REP, byt);
             Assertions.assertEquals("L", Character.toString(byt));
         }
@@ -70,7 +76,7 @@ public class IOBasicsTest {
      */
     @Test //SHOULD FAIL
     void fileReaderVsFileInputStream1() throws IOException {
-        File file = new File(CAR_FILE_NAME);
+        File file = new File(SPECIAL_FILE_NAME);
         Assertions.assertTrue(file.exists());
 
         try (InputStream inputStream = new FileInputStream(file)) {
@@ -93,7 +99,7 @@ public class IOBasicsTest {
      */
     @Test
     void fileReaderVsFileInputStream2() throws IOException {
-        File file = new File(CAR_FILE_NAME);
+        File file = new File(SPECIAL_FILE_NAME);
         Assertions.assertTrue(file.exists());
 
         try (FileReader fileReader = new FileReader(file, StandardCharsets.UTF_8)) {
@@ -157,7 +163,7 @@ public class IOBasicsTest {
      */
     @Test
     void scanner() throws IOException {
-        File file = new File(CAR_FILE_NAME);
+        File file = new File(SPECIAL_FILE_NAME);
         Assertions.assertTrue(file.exists());
 
         try (Scanner scanner = new Scanner(file, StandardCharsets.UTF_8)) {
@@ -170,10 +176,10 @@ public class IOBasicsTest {
 
     /*
      * Summary:
-     * InputStream reads 1 byte at a time
-     * Reader reads 1 character at a time and allows to specify charset (uses InputStream)
-     * BufferedReader loads a chunk of chars into memory and streams them one at a time (uses InputStream)
-     * Scanner uses Regex to read specific data types (int, double etc...) instead of just plain bytes or chars (uses InputStream)
+     * InputStream reads 1 byte at a time. Useful when dealing with binary data.
+     * Reader reads 1 character at a time and allows to specify charset. Easier to use than InputStream when dealing with characters.
+     * BufferedReader loads a chunk of chars into memory and streams them one at a time. Better for larger files.
+     * Scanner makes reading different types of data easier by providing convenient apis that use regex under the hood to parse read data.
      */
 
 }

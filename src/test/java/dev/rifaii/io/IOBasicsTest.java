@@ -9,13 +9,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Stream;
-
-import static java.util.Arrays.asList;
 
 /*
  * There are many ways to read a file in Java:
@@ -182,4 +176,42 @@ public class IOBasicsTest {
      * Scanner makes reading different types of data easier by providing convenient apis that use regex under the hood to parse read data.
      */
 
+
+    /**
+     * Fun fact
+     * char in java is 2 bytes so every character in a string is 2 bytes. (UTF-16)
+     * But it's not possible to directly check the amount of bytes for a character
+     * so demonstrating this is not easy.
+     *
+     * Creating a string with a single character and calling .getBytes() on it and then
+     * checking length won't really prove this either, because if a charset is not specified
+     * in .getBytes() then it uses the System default charset which defeats the point.
+     *
+     */
+    @Test
+    void stringBytesLength() {
+        String str = "s";
+        int bytesCount = str.getBytes().length;
+        Assertions.assertEquals(1, bytesCount);
+        System.out.println(bytesCount);
+    }
+
+    /*
+     * Considering the explanation above, then one would think that
+     * specifying charset to UTF-16 would give a bytes array with length '2'
+     */
+    @Test
+    void utf16StringBytesLength() {
+        String str = "s";
+        int bytesCount = str.getBytes(StandardCharsets.UTF_16).length;
+        Assertions.assertEquals(2, bytesCount);
+    }
+
+    /**
+     *
+     * If UTF-16 charset is specified when calling .getBytes() on a single character string,
+     * then the length of the bytes array will be actually 4, that's because the character
+     * itself will be 2 bytes in addition to a BYTE ORDER MARK appended to the start of the String
+     * which indicates if the String was stored with Big-endian or little-endian.
+     */
 }
